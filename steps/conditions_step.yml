@@ -18,7 +18,7 @@ trigger:
           params:
             text: ${userMessageText}
             strings:
-              - "Good"
+              - 'Good'
       then:
         do:
           - actionId: bot_message
