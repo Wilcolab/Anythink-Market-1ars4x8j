@@ -16,9 +16,9 @@ trigger:
       conditions:
         - conditionId: text_contains_strings
           params:
-            text: <placeholder>
+            text: ${userMessageText}
             strings:
-              - "<placeholder>"
+              - "good"
       then:
         do:
           - actionId: bot_message
