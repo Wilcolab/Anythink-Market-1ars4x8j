@@ -5,7 +5,7 @@ startFlow:
       params:
         person: keen
         messages:
-          - text: "What's up?"
+          - text: "<placeholder>"
             delay: 2000
 trigger:
   type: user_message
@@ -13,10 +13,4 @@ trigger:
     person: keen
   flowNode:
     do:
-      - actionId: bot_message
-        params:
-          person: keen
-          messages:
-            - text: "Thanks for the reply"
-              delay: 2000
       - actionId: finish_step
