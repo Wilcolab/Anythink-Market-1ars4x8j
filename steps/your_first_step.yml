@@ -17,6 +17,6 @@ trigger:
         params:
           person: keen
           messages:
-            - text: 'Thanks for the reply'
+            - text: "Thanks for the reply"
               delay: 2000
       - actionId: finish_step
