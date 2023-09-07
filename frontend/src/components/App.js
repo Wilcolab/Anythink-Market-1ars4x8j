@@ -44,7 +44,7 @@ const App = (props) => {
     if (token) {
       agent.setToken(token);
 
-      //ry {
+      //try {
         const decodedToken = jwt.decode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
           navigate('/login');
@@ -55,7 +55,6 @@ const App = (props) => {
       //   navigate('/login');
       // }
     }
-    onLoad(token ? agent.Auth.current() : null, token);
   }, [onLoad]);
 
   if (props.appLoaded) {
