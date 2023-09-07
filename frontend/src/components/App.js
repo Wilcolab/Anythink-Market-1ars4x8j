@@ -45,15 +45,21 @@ const App = (props) => {
       agent.setToken(token);
 
       //try {
-        const decodedToken = jwt.decode(token);
-        if (decodedToken.exp * 1000 < Date.now()) {
+        const tokenPayload = JSON.parse(atob(token.split('.')[1])); // Decode the middle part of the token (payload)
+        const tokenExpiration = tokenPayload.exp; 
+
+        console.log(`tokenExpiration = ${tokenExpiration}`)
+        if (tokenExpiration * 1000 < Date.now()) {
           navigate('/login');
         } else {
+          console.log("regular behavor")
+
           onLoad(token ? agent.Auth.current() : null, token);
         }
-      // } catch (error) {
-      //   navigate('/login');
-      // }
+      //  } catch (error) {
+      //   console.log("ERRROROROROOROROROR")
+      //    navigate('/login');
+      //  }
     }
   }, [onLoad]);
 
