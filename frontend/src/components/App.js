@@ -44,16 +44,16 @@ const App = (props) => {
     if (token) {
       agent.setToken(token);
 
-      try {
+      //ry {
         const decodedToken = jwt.decode(token);
         if (decodedToken.exp * 1000 < Date.now()) {
           navigate('/login');
         } else {
           onLoad(token ? agent.Auth.current() : null, token);
         }
-      } catch (error) {
-        navigate('/login');
-      }
+      // } catch (error) {
+      //   navigate('/login');
+      // }
     }
     onLoad(token ? agent.Auth.current() : null, token);
   }, [onLoad]);
