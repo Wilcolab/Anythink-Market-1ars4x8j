@@ -43,20 +43,9 @@ const App = (props) => {
     const token = window.localStorage.getItem("jwt");
     if (token) {
       agent.setToken(token);
-
-        const tokenPayload = JSON.parse(atob(token.split('.')[1])); // Decode the middle part of the token (payload)
-        const tokenExpiration = tokenPayload.exp; 
-
-        if (tokenExpiration * 1000 < Date.now()) {
-          navigate('/login');
-        } else {
-          onLoad(token ? agent.Auth.current() : null, token);
-        }
-    } else {
-      // Token is missing, redirect to login
-      navigate('/login');
     }
-  }, [onLoad, navigate]);
+    onLoad(token ? agent.Auth.current() : null, token);
+  }, [onLoad]);
 
   if (props.appLoaded) {
     return (
