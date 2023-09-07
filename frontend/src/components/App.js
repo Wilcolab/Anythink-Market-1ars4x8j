@@ -44,24 +44,19 @@ const App = (props) => {
     if (token) {
       agent.setToken(token);
 
-      //try {
         const tokenPayload = JSON.parse(atob(token.split('.')[1])); // Decode the middle part of the token (payload)
         const tokenExpiration = tokenPayload.exp; 
 
-        console.log(`tokenExpiration = ${tokenExpiration}`)
         if (tokenExpiration * 1000 < Date.now()) {
           navigate('/login');
         } else {
-          console.log("regular behavor")
-
           onLoad(token ? agent.Auth.current() : null, token);
         }
-      //  } catch (error) {
-      //   console.log("ERRROROROROOROROROR")
-      //    navigate('/login');
-      //  }
+    } else {
+      // Token is missing, redirect to login
+      navigate('/login');
     }
-  }, [onLoad]);
+  }, [onLoad, navigate]);
 
   if (props.appLoaded) {
     return (
