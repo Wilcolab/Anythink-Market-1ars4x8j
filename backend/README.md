@@ -1,19 +1,30 @@
-# Anythink Market Backend
+Web routes
+==========
 
-The Anythink Market backend is Ruby web app written with [Ruby On Rails](https://rubyonrails.org/)
+All routes are available on `/docs` or `/redoc` paths with Swagger or ReDoc.
 
-## Dependencies
+Project structure
+=================
 
-- [acts_as_follower](https://github.com/tcocca/acts_as_follower) - For implementing followers/following
-- [acts_as_taggable](https://github.com/mbleigh/acts-as-taggable-on) - For implementing tagging functionality
-- [Devise](https://github.com/plataformatec/devise) - For implementing authentication
-- [Jbuilder](https://github.com/rails/jbuilder) - Default JSON rendering gem that ships with Rails, used for making reusable templates for JSON output.
-- [JWT](https://github.com/jwt/ruby-jwt) - For generating and validating JWTs for authentication
+Files related to application are in the `app` or `tests` directories. Application parts are:
 
-## Folders
+    app
+    ├── api              - web related stuff.
+    │   ├── dependencies - dependencies for routes definition.
+    │   ├── errors       - definition of error handlers.
+    │   └── routes       - web routes.
+    ├── core             - application configuration, startup events, logging.
+    ├── db               - db related stuff.
+    │   ├── migrations   - manually written alembic migrations.
+    │   └── repositories - all crud stuff.
+    ├── models           - pydantic models for this application.
+    │   ├── domain       - main models that are used almost everywhere.
+    │   └── schemas      - schemas for using in web routes.
+    ├── resources        - strings that are used in web responses.
+    ├── services         - logic that is not just crud related.
+    └── main.py          - FastAPI application creation and configuration.
 
-- `app/models` - Contains the database models for the application where we can define methods, validations, queries, and relations to other models.
-- `app/views` - Contains templates for generating the JSON output for the API
-- `app/controllers` - Contains the controllers where requests are routed to their actions, where we find and manipulate our models and return them for the views to render.
-- `config` - Contains configuration files for our Rails application and for our database, along with an `initializers` folder for scripts that get run on boot.
-- `db` - Contains the migrations needed to create our database schema.
+Project structure
+=================
+
+Project dependencies are managed by poetry (https://python-poetry.org), using venv (https://docs.python.org/3/library/venv.html).

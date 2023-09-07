@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/rails db:seed
+python3 ./app/db/seeds.py
