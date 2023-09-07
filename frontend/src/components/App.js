@@ -43,6 +43,17 @@ const App = (props) => {
     const token = window.localStorage.getItem("jwt");
     if (token) {
       agent.setToken(token);
+
+      try {
+        const decodedToken = jwt.decode(token);
+        if (decodedToken.exp * 1000 < Date.now()) {
+          navigate('/login');
+        } else {
+          onLoad(token ? agent.Auth.current() : null, token);
+        }
+      } catch (error) {
+        navigate('/login');
+      }
     }
     onLoad(token ? agent.Auth.current() : null, token);
   }, [onLoad]);
