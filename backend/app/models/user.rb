@@ -22,6 +22,7 @@ class User < ApplicationRecord
     payload = {
       id: id,
       username: username,
+      role: role,
       exp: 60.days.from_now.to_i
     }
     JWT.encode(payload, Rails.application.secrets.secret_key_base)
