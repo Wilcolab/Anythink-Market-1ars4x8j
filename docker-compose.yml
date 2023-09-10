@@ -1,33 +1,27 @@
 version: "3.8"
 services:
-  anythink-backend-python:
+  anythink-backend-rails:
     build: ./backend
-    container_name: anythink-backend-python
-    command: >
-      sh -c "cd backend &&
-            poetry install &&
-            poetry export -f "requirements.txt" --without-hashes --with-credentials > "requirements.txt"
-            /wait-for-it.sh postgres-python:5432 -q -t 60 && 
-            poetry run alembic upgrade head &&
-            poetry run gunicorn app.main:app --worker-class=uvicorn.workers.UvicornWorker --bind=0.0.0.0:3000 --workers=5"
+    container_name: anythink-backend-rails
+    command: sh -c "cd backend && bundle install && /wait-for-it.sh postgres-rails:5432 -q -t 60 && ./start_rails.sh"
+
     working_dir: /usr/src
     volumes:
-      - ./:/usr/src
+      - ./:/usr/src/
     ports:
       - "3000:3000"
     environment:
-      - APP_ENV=dev
-      - SECRET_KEY=secret
-      - DEBUG=True
-      - DATABASE_URL=postgresql://postgres:@postgres-python:5432/anythink-market
+      - RAILS_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgres://user:@postgres-rails:5432
       - GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN=${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}
     depends_on:
-      - "postgres-python"
+      - "postgres-rails"
 
   anythink-frontend-react:
     build: ./frontend
     container_name: anythink-frontend-react
-    command: sh -c "cd frontend && yarn install && /wait-for-it.sh anythink-backend-python:3000 -t 120 --strict -- curl --head -X GET --retry 30 --retry-connrefused --retry-delay 1 anythink-backend-python:3000/api/ping && yarn start"
+    command: sh -c "cd frontend && yarn install && /wait-for-it.sh anythink-backend-rails:3000 -t 120 --strict -- curl --head -X GET --retry 30 --retry-connrefused --retry-delay 1 anythink-backend-rails:3000/api/ping  && yarn start"
     environment:
       - NODE_ENV=development
       - PORT=3001
@@ -40,20 +34,20 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - "anythink-backend-python"
+      - "anythink-backend-rails"
 
-  postgres-python:
-    container_name: postgres-python
+  postgres-rails:
+    container_name: postgres-rails
     restart: on-failure
     image: postgres
     logging:
       driver: none
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: anythink-market
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     volumes:
-      - ~/postgres/data:/data/db
+      - ~/posgres/data:/data/db
     ports:
       - '5433:5432'
 
