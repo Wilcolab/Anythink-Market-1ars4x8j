@@ -9,8 +9,7 @@ Rails.application.routes.draw do
                        path_names: { sign_in: :login }
 
     resource :user, only: %i[show update]
-    resources :users, only: %i[index]
-    
+
     resources :profiles, param: :username, only: [:show] do
       resource :follow, only: %i[create destroy]
     end
