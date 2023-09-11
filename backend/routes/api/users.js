@@ -6,8 +6,9 @@ var auth = require("../auth");
 const { sendEvent } = require("../../lib/event");
 
 function isAdmin(req, res, next) {
-  if (req.user && req.user.role === 'admin') {
-    return next(); // User has admin role, proceed to the next middleware
+  console.log(req.user)
+  if (req.user && req.user.role == 'admin') {
+    return next();
   } else {
     return res.status(403).json({ error: 'Unauthorized' }); // User doesn't have admin role, send a forbidden response
   }
