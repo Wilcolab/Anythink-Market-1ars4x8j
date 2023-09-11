@@ -81,7 +81,7 @@ class ItemsController < ApplicationController
   def destroy
     @item = Item.find_by!(slug: params[:slug])
 
-    if @item.user_id == @current_user_id
+    if @item.user_id == @current_user_id || current_user.role == 'admin'
       @item.destroy
 
       render json: {}
