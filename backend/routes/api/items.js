@@ -210,9 +210,7 @@ router.delete("/:item", auth.required, function(req, res, next) {
         return res.sendStatus(401);
       }
 
-      console.log(req.payload);
-
-      if (req.item.seller._id.toString() === req.payload.id.toString() || req.payload.role === 'admin') {
+      if (req.item.seller._id.toString() === req.payload.id.toString()) {
         return req.item.remove().then(function() {
           return res.sendStatus(204);
         });

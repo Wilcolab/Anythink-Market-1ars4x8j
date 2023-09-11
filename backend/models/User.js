@@ -62,7 +62,6 @@ UserSchema.methods.generateJWT = function() {
     {
       id: this._id,
       username: this.username,
-      role: this.role,
       exp: parseInt(exp.getTime() / 1000)
     },
     secret
