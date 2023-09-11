@@ -5,7 +5,15 @@ var User = mongoose.model("User");
 var auth = require("../auth");
 const { sendEvent } = require("../../lib/event");
 
-router.get("/users", auth.required, function (req, res, next) {
+function isAdmin(req, res, next) {
+  if (req.user && req.user.role === 'admin') {
+    return next(); // User has admin role, proceed to the next middleware
+  } else {
+    return res.status(403).json({ error: 'Unauthorized' }); // User doesn't have admin role, send a forbidden response
+  }
+}
+
+router.get("/users", auth.required, isAdmin, function (req, res, next) {
   User.find()
     .then(function (users) {
       return res.json({
