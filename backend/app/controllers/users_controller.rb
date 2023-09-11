@@ -6,8 +6,12 @@ class UsersController < ApplicationController
   def show; end
 
   def index
-    authorize_admin
-    @users = User.all
+    unless current_user && current_user.role == 'admin'
+      render json: { error: 'Forbidden' }, status: :forbidden
+      return
+    end
+
+    render json: { users: User.all }, status: :ok
   end
 
   def update
@@ -22,12 +26,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :bio, :image, :role)
-  end
-
-  def authorize_admin
-    unless current_user && current_user.role == 'admin'
-      render json: { error: 'Forbidden' }, status: :forbidden
-    end
-  end
-  
+  end  
 end
