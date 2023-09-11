@@ -5,6 +5,15 @@ class UsersController < ApplicationController
 
   def show; end
 
+  def index
+    unless current_user && current_user.role == 'admin'
+      render json: { error: 'Forbidden' }, status: :forbidden
+      return
+    end
+
+    render json: { users: User.all }, status: :ok
+  end
+
   def update
     if current_user.update(user_params)
       render :show
@@ -17,5 +26,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :email, :password, :bio, :image, :role)
-  end
+  end  
 end
