@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
     resource :user, only: %i[show update]
 
+    get '/users', to: 'users#index'
+
     resources :profiles, param: :username, only: [:show] do
       resource :follow, only: %i[create destroy]
     end
