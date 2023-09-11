@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   def index
     unless current_user && current_user.role == 'admin'
       render json: { error: 'Access forbidden' }, status: :forbidden
+      return
     end
 
     render json: {users: User.all}, status: :ok
