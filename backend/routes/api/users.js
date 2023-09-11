@@ -6,6 +6,9 @@ var auth = require("../auth");
 const { sendEvent } = require("../../lib/event");
 
 router.get("/users", auth.required, function (req, res, next) {
+  if (req.payload && req.payload.role !== 'admin') {
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
   User.find()
     .then(function (users) {
       return res.json({
