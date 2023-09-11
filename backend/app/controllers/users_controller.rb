@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       render json: { error: 'Access forbidden' }, status: :forbidden
     end
 
-    render json: {users: User.all}. status: :ok
+    render json: {users: User.all}, status: :ok
   end
 
   def update
