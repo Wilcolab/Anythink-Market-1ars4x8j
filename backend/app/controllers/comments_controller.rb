@@ -18,8 +18,12 @@ class CommentsController < ApplicationController
   def destroy
     @comment = @item.comments.find(params[:id])
 
-    @comment.destroy
-    render json: {}
+    if @comment.user_id == @current_user_id
+      @comment.destroy
+      render json: {}
+    else
+      render json: { errors: { comment: ['not owned by user'] } }, status: :forbidden
+    end
   end
 
   private
